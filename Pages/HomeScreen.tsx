@@ -19,7 +19,7 @@ export class HomeScreen extends React.Component<HomeScreenProps,{}> {
         <ScrollView style={style.container}>
           <View style={{width: screenWidth}}>
             <HomeMenuItem title='Storage' img={require('../assets/menu_storage.jpg')} performOnClick={() => {this.props.navigation.navigate('Storage')}}/>
-            <HomeMenuItem title='Learn Cards' img={require('../assets/menu_learn.jpg')} performOnClick={() => {this.props.navigation.navigate('LearnCards')}}/>
+            <HomeMenuItem title='Study Cards' img={require('../assets/menu_learn.jpg')} performOnClick={() => {this.props.navigation.navigate('SelectStudyBox')}}/>
             <HomeMenuItem title='Settings' img={require('../assets/menu_settings.jpg')} performOnClick={() => {this.props.navigation.navigate('Settings')}}/>
             <View style={style.placeholder}/>
           </View>
