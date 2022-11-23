@@ -7,10 +7,11 @@ import * as SQLite from 'expo-sqlite';
 import * as SQLiteHelper from './Utils/SQLiteHelper'
 import { HomeScreen } from './Pages/HomeScreen';
 import { StorageScreen } from './Pages/StorageScreen';
-import { LearnCardsScreen } from './Pages/LearnCardsScreen';
+import { StudyCardsScreen } from './Pages/StudyCardsScreen';
 import { SettingsScreen } from './Pages/SettingsScreen';
 import { CreateNewBox } from './Pages/CreateBoxScreen';
 import { CardScreen } from './Pages/CardScreen';
+import { SelectStudyBox } from './Pages/SelectStudyBoxScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,10 +29,11 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name='Home' component={HomeScreen} options={{headerShown: false}}/>
         <Stack.Screen name='Storage' component={StorageScreen} options={{headerShown: false}}/>
-        <Stack.Screen name='LearnCards' component={LearnCardsScreen} options={{headerShown: false}}/>
         <Stack.Screen name='Settings' component={SettingsScreen} options={{headerShown: false}}/>
         <Stack.Screen name='CreateNewBox' component={CreateNewBox} options={{headerShown: false}}/>
         <Stack.Screen name='CardScreen' component={CardScreen} options={{headerShown: false}}/>
+        <Stack.Screen name='StudyCards' component={StudyCardsScreen} options={{headerShown: false}}/>
+        <Stack.Screen name='SelectStudyBox' component={SelectStudyBox} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
