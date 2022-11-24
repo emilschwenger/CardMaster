@@ -34,7 +34,6 @@ export function SelectStudyBox (props: SelcetStudyBoxProps) {
             <View>
                 <View style={{height: 5}}/>
                 <Button title={'Back'} onPress={()=>{
-                    console.log(props);
                     props.navigation.navigate('Home');
                 }}/>
                 <View style={{height: 5}}/>

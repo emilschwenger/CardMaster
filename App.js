@@ -38,37 +38,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-function sqlTest() {
-  SQLiteHelper.checkBoxTable();
-  SQLiteHelper.checkCardTable();
-  SQLiteHelper.checkCardTable();  
-  SQLiteHelper.createBox("NEWBOX2");
-  SQLiteHelper.createBox("NEWBOX3");
-
-  SQLiteHelper.readBox(1,(result)=>{
-    console.log(result.rows._array);
-  });
-  
-  SQLiteHelper.readAllBox((result) => {
-      setAlpha(result.rows.length);
-      console.log(result.rows._array);
-  });
-  SQLiteHelper.deleteAllBox(() => {
-    console.log('Deleted all boxes');
-  });
-  SQLiteHelper.dropBoxTable();
-  SQLiteHelper.dropCardTable();
-  SQLiteHelper.deleteBox(1, () => {
-    console.log('Deleted');
-  });
- SQLiteHelper.updateBox({boxID: 2, name: 'changed name'}, () => {
-  console.log('Changed boxname');
- });
-  SQLiteHelper.checkBoxTable();
-  SQLiteHelper.checkCardTable();
-  SQLiteHelper.readAllBox((result) => {
-    setAlpha(JSON.stringify(result.rows._array));
-    console.log(result.rows._array);
-  });
-}
