@@ -5,17 +5,50 @@ import * as SQLiteHelper from '../Utils/SQLiteHelper';
 import * as SQLite from 'expo-sqlite';
 import { CMHeader } from "../Components/CMHeader";
 
-interface StudyCarsScreenProps {
+interface StudyCardsScreenProps {
     navigation: any,
     route: any
 }
 
-export class StudyCardsScreen extends React.Component<StudyCarsScreenProps,{}> {
+interface StudyCardsScreenState {
+    currentCard: SQLiteHelper.card,
+    cardFace: boolean,
+    finished: boolean
+}
+
+export class StudyCardsScreen extends React.Component<StudyCardsScreenProps,StudyCardsScreenState> {
 
     currentBox: SQLiteHelper.box = this.props.route.params.box;
 
-    constructor(props: any) {
+    cardList: Array<SQLiteHelper.card>;
+
+    constructor(props: StudyCardsScreenProps) {
         super(props);
+        this.state = {
+            currentCard: {cardID: -1, boxID: -1, rueckseite: 'Empty', vorderseite: 'empty'},
+            cardFace: false,
+            finished: false
+        }
+        SQLiteHelper.readAllCardByBoxID(props.route.params.box.boxID, (results: SQLite.SQLResultSet) => {
+            this.cardList = results.rows._array;
+            this.selectRandomCard();
+        });
+    }
+
+    selectRandomCard = () => {
+        if(this.cardList.length==0) {
+            console.log('No cards left to study');
+            this.setState({
+                finished: true
+            });
+            return;
+        }
+        let index: number = Math.floor(Math.random() * this.cardList.length);
+        this.setState({
+            currentCard: this.cardList[index],
+            cardFace: false
+        });
+        this.cardList.splice(index, 1);
     }
 
     quitStudy = () => {
@@ -24,19 +57,41 @@ export class StudyCardsScreen extends React.Component<StudyCarsScreenProps,{}> {
 
     render () {
 
+        let CardElement: any;
+
+        if(this.state.finished) {
+            //no cards left
+            CardElement = <Text style={style.cardViewTextStyle}>Finished</Text>
+        } else {
+            if(this.state.cardFace) {
+                //rueckseite
+                CardElement = <Text style={style.cardViewTextStyle}>{this.state.currentCard.rueckseite}</Text>
+            } else {
+                //vorderseite
+                CardElement = <Text style={style.cardViewTextStyle}>{this.state.currentCard.vorderseite}</Text>
+            }
+        }
+
         return (
                 <View style={style.container}>
                     <CMHeader title="CardMaster"/>
                     <View style={style.controllContainer}>
                         <Button title={'Quit'} containerStyle={style.quitButton} onPress={() => {this.quitStudy()}}/>
                         <View style={style.cardView}>
-                            <Text>Current box: {this.currentBox.name}</Text>
+                            {CardElement}
                         </View>
                         <View>
-                            <Button title={'Answer'}/>
+                            <Button title={'Answer'} onPress={() => {
+                                this.setState({
+                                    cardFace: !this.state.cardFace
+                                });
+                            }}/>
                             <View style={style.buttonContainer}>
-                                <Button containerStyle={style.halfSizeButton} title={'Previous'}/>
-                                <Button containerStyle={style.halfSizeButton} title={'Next'}/>
+                                <Button containerStyle={style.halfSizeButton} title={'Retry Card'} onPress={() => {
+                                    this.cardList.push(this.state.currentCard);
+                                    this.selectRandomCard();
+                                }}/>
+                                <Button containerStyle={style.halfSizeButton} title={'Next'} onPress={() => this.selectRandomCard()}/>
                             </View>
                         </View>
                     </View>
@@ -47,7 +102,7 @@ export class StudyCardsScreen extends React.Component<StudyCarsScreenProps,{}> {
 
 const textStyle = {
     fontFamily: 'sans-serif',
-    color: 'black'
+    color: 'black',
 }
 
 const style = StyleSheet.create({
@@ -88,6 +143,11 @@ const style = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 15,
-        flexGrow: 3
+        flexGrow: 3,
+        padding: 15
+    },
+    cardViewTextStyle: {
+        ...textStyle,
+        fontSize: 20
     }
 });

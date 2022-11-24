@@ -20,12 +20,9 @@ export function SelectStudyBox (props: SelcetStudyBoxProps) {
 
     useEffect(() => {
         SQLiteHelper.readAllBox((results: SQLite.SQLResultSet) => {
-            if(JSON.stringify(boxList)==JSON.stringify(results.rows._array)) {
-                return;
-            }
             setBoxList(results.rows._array);
         });
-    });
+    }, []);
 
     const studyBox = (box: SQLiteHelper.box) => {
         props.navigation.navigate('StudyCards', {box});
