@@ -168,13 +168,3 @@ export function deleteCard(cardID: number, callback: () => void ) {
         }
     );
 }
-
-export function checkLearnTable() {
-    performQuery(
-        'CREATE TABLE IF NOT EXISTS Learn '+
-        '(learnID INTEGER NOT NULL PRIMARY KEY,cardID INT NOT NULL,rueckseite TEXT NOT NULL, boxID INTEGER)',
-        (tx: SQLite.SQLTransaction, result: SQLite.SQLResultSet) => {
-            console.log('Created Card table');
-        }
-    )
-}
